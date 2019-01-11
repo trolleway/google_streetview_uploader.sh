@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 '''
 
 Upload a folder of spherical photos to Google Street View using Street View Publish API
 
- Uвage: python run_plain.py  
- '''
+Uвage: python run_plain.py  
+'''
 
 import os, sys
 from google.proto.streetview.publish.v1 import resources_pb2
@@ -67,6 +68,7 @@ def get_lat_lon_direction(exif_data):
     """Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)"""
     lat = None
     lon = None
+    direction = None
 
     if "GPSInfo" in exif_data:      
         gps_info = exif_data["GPSInfo"]
@@ -96,46 +98,19 @@ def get_lat_lon_direction(exif_data):
             lon = _convert_to_degress(gps_longitude)
             if gps_longitude_ref != "E":
                 lon = 0 - lon
+                
+    else:
+        print exif_data
+        assert "GPSInfo" in exif_data
 
     return lat, lon, direction
 
 
 
     
-def return_token(CLIENT_ID,CLIENT_SECRET,SCOPE,REDIRECT_URI): 
-  return get_oauth2_token(CLIENT_ID,CLIENT_SECRET,SCOPE,REDIRECT_URI);
 
 
-def disable_stout():
-  o_stdout = sys.stdout 
-  o_file = open(os.devnull, 'w')
-  sys.stdout = o_file
-  return (o_stdout, o_file)
-
-
-def enable_stout(o_stdout, o_file):
-  o_file.close()
-  sys.stdout = o_stdout
-
-
-def get_oauth2_token(CLIENT_ID,CLIENT_SECRET,SCOPE,REDIRECT_URI):
-
-  o_stdout, o_file = disable_stout()
-
-  flow = OAuth2WebServerFlow(
-   client_id=CLIENT_ID,
-   client_secret=CLIENT_SECRET,
-   scope=SCOPE,
-   redirect_uri=REDIRECT_URI)
-  print flow
-
-  storage = Storage('creds.data')
-  credentials = run_flow(flow, storage)
-  enable_stout(o_stdout, o_file)
-
-  return credentials.access_token
-
-  def get_list_photos():
+def get_list_photos():
     url = 'https://streetviewpublish.googleapis.com/v1/photos'
     params = {'key':API_KEY, 'pageSize':10}
     headers = {'authorization': 'Bearer {YOUR_ACCESS_TOKEN}'.format(YOUR_ACCESS_TOKEN=access_token)}
@@ -147,6 +122,7 @@ def get_oauth2_token(CLIENT_ID,CLIENT_SECRET,SCOPE,REDIRECT_URI):
 def get_access_token():
   client_id = ''
   client_secret = ''
+
   flow = OAuth2WebServerFlow(client_id=client_id,
                              client_secret=client_secret,
                              scope='https://www.googleapis.com/auth/streetviewpublish',
@@ -165,7 +141,7 @@ if __name__ == '__main__':
     
     
 
-    path = 'g:/Madv360/'
+    path = 'g:/Madv360/Madv360v2/2018-07-28_lefortovo/pack1/'
     files = list()
     for dirpath, dnames, fnames in os.walk(path):
         for f in fnames:
