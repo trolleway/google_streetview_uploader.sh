@@ -22,7 +22,7 @@ import requests
 import time
 import glob
 
-
+from tqdm import tqdm
     
 
 
@@ -64,16 +64,18 @@ if __name__ == '__main__':
     credentials = google.oauth2.credentials.Credentials(token)   
     
 
-    path = 'g:/Madv360/Madv360v2/2018-07-28_lefortovo/pack99/'
+    path = 'g:/Madv360/Madv360v2/2018-07-28_lefortovo/pack6/'
     files = list()
     for dirpath, dnames, fnames in os.walk(path):
         for f in fnames:
             if f.upper().endswith(".JPG"):
                 files.append(os.path.join(dirpath, f))
 
-
+    pbar = tqdm(total=len(files))
     for infile in files:
-        print infile
+        pbar.set_description(infile)
+        pbar.update(1)
+        #print infile
         if 1 != 2:
             try:
                 filename = infile              
@@ -82,11 +84,11 @@ if __name__ == '__main__':
                 # Create a client and request an Upload URL.
                 streetview_client = client.StreetViewPublishServiceClient(credentials=credentials)
                 upload_ref = streetview_client.start_upload()
-                print("Created upload url: " + str(upload_ref))
+                #print("Created upload url: " + str(upload_ref))
 
                 # Upload the photo bytes to the Upload URL.
                 with open(path, "rb") as f:
-                  print("Uploading file: " + f.name)
+                  #print("Uploading file: " + f.name)
                   raw_data = f.read()
                   headers = {
                       "Authorization": "Bearer " + token,
@@ -103,8 +105,9 @@ if __name__ == '__main__':
                 #from API refrence:
                 #Currently, the only way to set heading, pitch, and roll in photo.create is through the Photo Sphere XMP metadata in the photo bytes.
                 create_photo_response = streetview_client.create_photo(photo)
-                print("Create photo response: " + str(create_photo_response))
+                #print("Create photo response: " + str(create_photo_response))
                
 
             except IOError:
                 print "IOError for", infile    
+    pbar.close()
