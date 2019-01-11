@@ -13,13 +13,14 @@ from google.proto.streetview.publish.v1 import resources_pb2
 from google.streetview.publish.v1 import street_view_publish_service_client as client
 import google.oauth2.credentials
 from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
 
 import requests
 import time
-
+import glob
 
 
     
@@ -35,13 +36,22 @@ def get_list_photos():
     print r.json()
 
 def get_access_token():
-  client_id = ''
-  client_secret = ''
 
-  flow = OAuth2WebServerFlow(client_id=client_id,
-                             client_secret=client_secret,
+  CLIENT_SECRETS_FILE = None
+  mask = 'client_secret*.json'
+  for CLIENT_SECRETS_FILE in glob.glob(mask):
+    pass
+    
+  if CLIENT_SECRETS_FILE is None:
+    print 'Please obtain client_secret.json from Google API Console, and save it into ' + os.path.dirname(os.path.realpath(__file__))
+    print 'It will be searched in this folder with mask: ' + mask
+    quit()
+    
+
+  
+  flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
                              scope='https://www.googleapis.com/auth/streetviewpublish',
-                             redirect_uri='http://example.com/auth_return')
+                             redirect_uri='http://example.com/auth_return') 
   storage = Storage('creds.data')
   # Open a web browser to ask the user for credentials.
   credentials = run_flow(flow, storage)
@@ -54,7 +64,7 @@ if __name__ == '__main__':
     credentials = google.oauth2.credentials.Credentials(token)   
     
 
-    path = 'g:/Madv360/Madv360v2/2018-07-28_lefortovo/pack1/'
+    path = 'g:/Madv360/Madv360v2/2018-07-28_lefortovo/pack99/'
     files = list()
     for dirpath, dnames, fnames in os.walk(path):
         for f in fnames:
