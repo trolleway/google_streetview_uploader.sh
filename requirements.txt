@@ -1,0 +1,3 @@
+gapic-google-maps-streetview_publish-v1
+oauth2client
+google-api-python-client
