@@ -71,9 +71,10 @@ class Streetview_uploader():
                 if f.upper().endswith(".JPG"):
                     files.append(os.path.join(dirpath, f))
 
+        print 'Upload all JPG files from '+path
         pbar = tqdm(total=len(files))
         for infile in files:
-            pbar.set_description(infile)
+            pbar.set_description(os.path.basename(infile))
             pbar.update(1)
             #print infile
             if 1 != 2:
@@ -97,7 +98,8 @@ class Streetview_uploader():
                           "X-Goog-Upload-Content-Length": str(len(raw_data)),
                       }
                       r = requests.post(upload_ref.upload_url, data=raw_data, headers=headers)
-                      print("Upload response: " + str(r))
+                      if r.status_code <> 200:
+                          print("Upload response: " + str(r))
 
                     # Upload the metadata of the photo.
                     photo = resources_pb2.Photo()

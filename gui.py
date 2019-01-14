@@ -13,7 +13,7 @@ arguments_parser.add_argument(
         "path", metavar = "path", help="Path to folder", widget="DirChooser")
         
         
-@Gooey(dump_build_config=True, program_name="google-streetview-upload")
+@Gooey(dump_build_config=True, program_name="google-streetview-upload", progress_regex=r"^progress: (\d+)%$")
 def main():
     args = arguments_parser.parse_args() 
 
