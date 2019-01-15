@@ -26,8 +26,6 @@ import glob,sys
 
 from gooey import Gooey, GooeyParser    
 
-import streetview_upload_module
-import sys
 
 
 arguments_parser = GooeyParser( description='Upload a folder with spherical panoramas to Google Street View Publish API')
