@@ -26,7 +26,9 @@ import glob,sys
 
 from gooey import Gooey, GooeyParser    
 
-
+#for pyinstaller
+nonbuffered_stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+sys.stdout = nonbuffered_stdout
 
 arguments_parser = GooeyParser( description='Upload a folder with spherical panoramas to Google Street View Publish API')
 arguments_parser.add_argument(
