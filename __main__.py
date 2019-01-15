@@ -22,7 +22,6 @@ import requests
 import time
 import glob,sys
 
-from tqdm import tqdm
  
 
 from gooey import Gooey, GooeyParser    
