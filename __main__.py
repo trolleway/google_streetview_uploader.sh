@@ -78,7 +78,7 @@ def main():
     i = 0
     for infile in files:
         i = i + 1
-        print(os.path.basename(infile) + " progress: {}%".format( str(100 / len(files) * i  )))
+        print(os.path.basename(infile) + " progress: {}%".format( str(round(float(100) / len(files) * i  ))))
         sys.stdout.flush()
         #print infile
         if 1 != 2:
