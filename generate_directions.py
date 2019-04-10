@@ -19,8 +19,8 @@ ANGLE = args.angle
 cmd = u'{MAPILLARY_TOOLS_PATH} process --advanced --import_path "{FOLDER}" --user_name {MAPILLARY_USERNAME} --interpolate_directions --offset_angle {ANGLE} --rerun --overwrite_EXIF_direction_tag'
 cmd = cmd.format(MAPILLARY_TOOLS_PATH = MAPILLARY_TOOLS_PATH,FOLDER = FOLDER,MAPILLARY_USERNAME = MAPILLARY_USERNAME, ANGLE = str(ANGLE))
 
-#print cmd
-#os.system(cmd)
+print cmd
+os.system(cmd)
 
 #print 'remove mapillary temporary folder'
 if os.path.isdir(os.path.join(FOLDER,'.mapillary')):
