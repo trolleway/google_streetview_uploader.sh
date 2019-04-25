@@ -9,4 +9,4 @@ do
 done
 
 
-upload --import_path "$PWD" --skip_subfolders --number_threads 10 --max_attempts 10 --advanced
+mapillary_tools upload --import_path "$PWD" --skip_subfolders --number_threads 10 --max_attempts 10 --advanced
