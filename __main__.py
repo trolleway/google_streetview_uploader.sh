@@ -60,6 +60,8 @@ def get_access_token():
 @Gooey(dump_build_config=True, program_name="google-streetview-upload", progress_regex=r"\w*progress: (\d+)%$")
 def main():
 
+    UPLOADED_FOLDER = 'uploaded to google street view'
+
     args = arguments_parser.parse_args() 
     path = args.path
     sys.argv = [sys.argv[0]]
@@ -68,15 +70,19 @@ def main():
     credentials = google.oauth2.credentials.Credentials(token)   
     #path = 'g:/Madv360/Madv360v2/2018-07-19_Sakhalin/'
     files = list()
+    
+
 
     for dirpath, dnames, fnames in os.walk(path):
         for f in fnames:
             if f.upper().endswith(".JPG"):
                 files.append(os.path.join(dirpath, f))
-
+                
     print 'Upload all JPG files from '+path
     i = 0
     for infile in files:
+        if os.path.basename(os.path.dirname(infile)) == UPLOADED_FOLDER:
+            continue
         i = i + 1
         print(os.path.basename(infile) + " progress: {}%".format( str(round(float(100) / len(files) * i  ))))
         sys.stdout.flush()
@@ -89,11 +95,11 @@ def main():
                 # Create a client and request an Upload URL.
                 streetview_client = client.StreetViewPublishServiceClient(credentials=credentials)
                 upload_ref = streetview_client.start_upload()
-                #print("Created upload url: " + str(upload_ref))
+
 
                 # Upload the photo bytes to the Upload URL.
                 with open(path, "rb") as f:
-                    #print("Uploading file: " + f.name)
+
                     raw_data = f.read()
                     headers = {
                       "Authorization": "Bearer " + token,
@@ -111,7 +117,15 @@ def main():
                 #from API refrence:
                 #Currently, the only way to set heading, pitch, and roll in photo.create is through the Photo Sphere XMP metadata in the photo bytes.
                 create_photo_response = streetview_client.create_photo(photo)
-                #print("Create photo response: " + str(create_photo_response))
+
+                
+                #create dir if not exists
+                uploaded_folder_path = os.path.join(os.path.dirname(infile),UPLOADED_FOLDER)
+                if not os.path.exists(uploaded_folder_path):
+                    os.makedirs(uploaded_folder_path)
+                
+                os.rename(infile,os.path.join(uploaded_folder_path,os.path.basename(infile)))
+
                
 
             except IOError:
