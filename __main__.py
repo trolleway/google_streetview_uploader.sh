@@ -80,7 +80,7 @@ def main():
                 
     print 'Upload all JPG files from '+path
     i = 0
-    for infile in files:
+    for infile in sorted(files):
         if os.path.basename(os.path.dirname(infile)) == UPLOADED_FOLDER:
             continue
         i = i + 1
