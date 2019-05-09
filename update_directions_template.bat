@@ -6,4 +6,4 @@ for /r %%v in (*.JPG) DO (
 )
 rmdir /s/q ".mapillary"
 
-xcopy /s /y %cd% g:\2g\src\
+xcopy /s /y %cd% g:\2g\
