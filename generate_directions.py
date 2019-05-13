@@ -29,12 +29,19 @@ if os.path.isdir(os.path.join(FOLDER,'.mapillary')):
     
 pbar = tqdm(total=len(os.listdir(FOLDER)))
     
+file = open('simple.bat','w') 
+
+    
 for filename in os.listdir(FOLDER):
     image_filename = os.path.join(FOLDER, filename)
     cmd = ' "{EXIFTOOL_PATH}" -overwrite_original -quiet -ProjectionType="equirectangular" -UsePanoramaViewer="True" -"PoseHeadingDegrees<$exif:GPSImgDirection" -"CroppedAreaImageWidthPixels<$ImageWidth" -"CroppedAreaImageHeightPixels<$ImageHeight" -"FullPanoWidthPixels<$ImageWidth" -"FullPanoHeightPixels<$ImageHeight" -CroppedAreaLeftPixels="0" -CroppedAreaTopPixels="0" "{image_filename}"'
     cmd = cmd.format(EXIFTOOL_PATH = EXIFTOOL_PATH,image_filename = image_filename)
     print cmd
     os.system(cmd)
+    file.write(cmd)
+    file.write("\n")
     #subprocess.Popen(cmd)
+    #subprocess.call([cmd])
     pbar.update(1)
 pbar.close()
+file.close() 

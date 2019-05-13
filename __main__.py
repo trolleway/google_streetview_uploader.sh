@@ -77,14 +77,21 @@ def main():
         for f in fnames:
             if f.upper().endswith(".JPG"):
                 files.append(os.path.join(dirpath, f))
-                
+    
+    total_count = 0 
+    for infile in sorted(files):
+        if os.path.basename(os.path.dirname(infile)) == UPLOADED_FOLDER:
+            continue
+        else:
+            total_count = total_count + 1
+            
     print 'Upload all JPG files from '+path
     i = 0
     for infile in sorted(files):
         if os.path.basename(os.path.dirname(infile)) == UPLOADED_FOLDER:
             continue
         i = i + 1
-        print(os.path.basename(infile) + " progress: {}%".format( str(round(float(100) / len(files) * i  ))))
+        print(os.path.basename(infile) + " progress: {}%".format( str(round(float(100) / total_count * i  ))))
         sys.stdout.flush()
         #print infile
         if 1 != 2:
