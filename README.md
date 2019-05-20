@@ -9,6 +9,14 @@ git clone https://github.com/trolleway/google-streetview-upload.git
 cd google-streetview-upload
 pip install -r requirements.txt
 ```
+
+2. Compile a wxpython for Ubuntu 18.04 (~20 minutes). Use TAB button for accept EULA.
+```
+sudo apt install make gcc libgtk-3-dev libwebkitgtk-dev libwebkitgtk-3.0-dev libgstreamer-gl1.0-0 freeglut3 freeglut3-dev python-gst-1.0 python3-gst-1.0 libglib2.0-dev ubuntu-restricted-extras libgstreamer-plugins-base1.0-dev
+sudo time pip install wxpython
+pip install -r requirements.txt
+```
+
 2. Create a project in the Google Developers Console and obtain authorization credentials so you can submit API requests. Download client secret JSON file, and save it to script folder.
 For details see https://developers.google.com/streetview/publish/first-app
 
