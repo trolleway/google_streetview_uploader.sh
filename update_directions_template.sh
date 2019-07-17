@@ -7,3 +7,4 @@ do
 done
 
 mapillary_tools upload --import_path "$PWD" --skip_subfolders --number_threads 5 --max_attempts 10 --advanced
+#empty line required for copy-paste
