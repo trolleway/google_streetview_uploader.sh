@@ -1,5 +1,6 @@
 USERNAME="trolleway"
-mapillary_tools process --advanced --import_path "$PWD" --user_name $USERNAME --cutoff_distance 100 --cutoff_time 60 --interpolate_directions --offset_angle 180 --rerun --overwrite_EXIF_direction_tag
+ANGLE="180"
+mapillary_tools process --advanced --import_path "$PWD" --user_name $USERNAME --cutoff_distance 100 --cutoff_time 60 --interpolate_directions --offset_angle $ANGLE --rerun --overwrite_EXIF_direction_tag
 
 for file in "$PWD"
 do
