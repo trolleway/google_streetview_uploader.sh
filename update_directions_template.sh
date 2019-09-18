@@ -3,7 +3,7 @@ ANGLE="180"
 TRACK="track.gpx"
 
 echo 'georefrencing...'
-exiftool -quiet -quiet -geotag $TRACK $(pwd)
+exiftool -quiet -quiet -overwrite_original -geotag $TRACK $(pwd)
 
 mapillary_tools process --advanced --import_path "$PWD" --user_name $USERNAME --cutoff_distance 100 --cutoff_time 60 --interpolate_directions --offset_angle $ANGLE --rerun --overwrite_EXIF_direction_tag
 
