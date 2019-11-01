@@ -17,7 +17,7 @@ sudo time pip install wxpython
 pip install -r requirements.txt
 ```
 
-2. Create a project in the Google Developers Console and obtain authorization credentials so you can submit API requests. Download client secret JSON file, and save it to script folder.
+2. Create a project in the Google Developers Console and obtain authorization credentials so you can submit API requests. Download client secret JSON file, and copy it to script folder as **client_secret.json** .
 For details see https://developers.google.com/streetview/publish/first-app
 
 3. Double click at __main__.py
