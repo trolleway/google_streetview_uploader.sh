@@ -115,7 +115,7 @@ def main():
                       "X-Goog-Upload-Content-Length": str(len(raw_data)),
                     }
                     r = requests.post(upload_ref.upload_url, data=raw_data, headers=headers)
-                    if r.status_code <> 200:
+                    if r.status_code != 200:
                         print("Upload response: " + str(r))
 
                 # Upload the metadata of the photo.
