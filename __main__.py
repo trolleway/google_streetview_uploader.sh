@@ -42,8 +42,8 @@ def get_access_token():
         pass
     
     if CLIENT_SECRETS_FILE is None:
-        print 'Please obtain client_secret.json from Google API Console, and save it into ' + os.path.dirname(os.path.realpath(__file__))
-        print 'It will be searched in this folder with mask: ' + mask
+        print('Please obtain client_secret.json from Google API Console, and save it into ' + os.path.dirname(os.path.realpath(__file__)))
+        print('It will be searched in this folder with mask: ' + mask)
         quit()
     
 
@@ -85,7 +85,7 @@ def main():
         else:
             total_count = total_count + 1
             
-    print 'Upload all JPG files from '+path
+    print('Upload all JPG files from '+path)
     i = 0
     for infile in sorted(files):
         if os.path.basename(os.path.dirname(infile)) == UPLOADED_FOLDER:
