@@ -68,7 +68,7 @@ def main():
     
     token = get_access_token()
     credentials = google.oauth2.credentials.Credentials(token)   
-    #path = 'g:/Madv360/Madv360v2/2018-07-19_Sakhalin/'
+
     files = list()
     
 
@@ -93,7 +93,6 @@ def main():
         i = i + 1
         print(os.path.basename(infile) + " progress: {}%".format( str(round(float(100) / total_count * i  ))))
         sys.stdout.flush()
-        #print infile
         if 1 != 2:
             try:
                 filename = infile              
@@ -136,7 +135,7 @@ def main():
                
 
             except IOError:
-                print "IOError for", infile    
+                print("IOError for", infile)    
 
 if __name__ == '__main__':
     main()    
