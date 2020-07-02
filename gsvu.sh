@@ -113,11 +113,30 @@ exp_json=$(jq -n "$exp_json")
 echo $exp_json	
 }  
 
-sample='/data/mapillary/test/IMG_20200620_202400_60685109.JPG'
+filename='/data/mapillary/test/IMG_20200620_202400_60685109.JPG'
 
-result2=$(get_data_json $sample 'https://IJHSDFHDLJ.JHFFKJJSDHF.JHKJ')
+#get upload URL
 
-echo 'top'
+
+
+upload_url_json="$(curl --request POST \
+        --url "https://streetviewpublish.googleapis.com/v1/photo:startUpload?key=${api_key}" \
+        --header "Authorization: Bearer ${access_token}" \
+        --header 'Content-Length: 0')"
+		
+upload_url=$(jq -n "$upload_url_json" | jq '.uploadUrl')		
+
+#strip quotes
+upload_url="${upload_url%\"}"
+upload_url="${upload_url#\"}"	
+		
+
+echo $upload_url
+
+
+result2=$(get_data_json $filename $upload_url)
+
+echo 
 echo $result2
 
 
