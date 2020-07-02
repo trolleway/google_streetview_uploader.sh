@@ -82,6 +82,42 @@ echo token=$access_token
 
 
 # do query
-curl -s --request GET  --url "https://streetviewpublish.googleapis.com/v1/photos?pageSize=10&view=INCLUDE_DOWNLOAD_URL&key="$api_key --header "Authorization: Bearer ${access_token}" | jq '.'
+#curl -s --request GET  --url "https://streetviewpublish.googleapis.com/v1/photos?pageSize=10&view=INCLUDE_DOWNLOAD_URL&key="$api_key --header "Authorization: Bearer ${access_token}" | jq '.'
+
+
+function get_data_json {
+
+# $1 - path to jpg
+# 2 - upload_url
+url=$2
+
+json_data=$(exiftool -q -q  -json -n   -gpslatitude -gpslongitude -gpsimgdirection -gpsdatetime $1)
+
+lat=$(jq -n "$json_data" | jq  '.[].GPSLatitude'  )
+lon=$(jq -n "$json_data" | jq  '.[].GPSLongitude'  )
+dir=$(jq -n "$json_data" | jq  '.[].GPSImgDirection'  )
+tme=$(jq -n "$json_data" | jq  '.[].GPSDateTime' | tr -d \" )
+tme=${tme:0:4}${tme:5:2}${tme:8:2}${tme:10:9} #simple convert datetime for convert to unixtime
+tme=$(date --date "$tme" +%s)
+
+TEMPLATE='{"uploadReference":{"uploadUrl": "%s"
+                  },"pose":{"heading": %s,
+                     "latLngPair":
+                     { "latitude": %s,
+                       "longitude": %s
+                     }}, "captureTime":{"seconds": %s},}'
+					 
+exp_json=$(printf "$TEMPLATE" "$url"  "$dir"  "$lat" "$lon" "$tme" )
+exp_json=$(jq -n "$exp_json")
+
+echo $exp_json	
+}  
+
+sample='/data/mapillary/test/IMG_20200620_202400_60685109.JPG'
+
+result2=$(get_data_json $sample 'https://IJHSDFHDLJ.JHFFKJJSDHF.JHKJ')
+
+echo 'top'
+echo $result2
 
 
