@@ -113,12 +113,9 @@ exp_json=$(jq -n "$exp_json")
 echo $exp_json	
 }  
 
-filename='/data/mapillary/test/IMG_20200620_202400_60685109.JPG'
+filename='/data/mapillary/test/IMG_20200627_190002_3566343.JPG'
 
 #get upload URL
-
-
-
 upload_url_json="$(curl --request POST \
         --url "https://streetviewpublish.googleapis.com/v1/photo:startUpload?key=${api_key}" \
         --header "Authorization: Bearer ${access_token}" \
@@ -129,14 +126,27 @@ upload_url=$(jq -n "$upload_url_json" | jq '.uploadUrl')
 #strip quotes
 upload_url="${upload_url%\"}"
 upload_url="${upload_url#\"}"	
-		
-
-echo $upload_url
-
-
-result2=$(get_data_json $filename $upload_url)
 
 echo 
-echo $result2
+echo 'post image'
+#post image
+post_image_response="$(curl --request POST \
+        --url "${upload_url}" \
+		--upload-file "${filename}" \
+        --header "Authorization: Bearer ${access_token}" \
+        )"
+		
 
+echo $post_image_response
 
+image_metadata_json=$(get_data_json $filename $upload_url)
+
+#post image metadata
+post_metadata_response="$(curl --request POST \
+        --url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" \
+        --header "Authorization: Bearer ${access_token}" \
+        --header 'Content-Type: application/json' \
+		--data  "${image_metadata_json}"
+        )"
+
+echo $post_metadata_response
