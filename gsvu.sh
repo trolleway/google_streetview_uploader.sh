@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# $1 - Api key
-# $2 - Client secret
+# $1 - image folder   '/data/mapillary/test/'
+
 
 api_key='AIzaSyBV1HvfE3nQuJqBiW1a_dZhZyhPEkWpIJw'
 
@@ -103,7 +103,7 @@ echo $exp_json
 
 
 
-dir='/data/mapillary/test/'
+dir=$1
 dir=$(realpath $dir)
 uploaded_dir=$dir/'uploaded2gsv'
 
