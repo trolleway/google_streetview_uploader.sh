@@ -5,7 +5,8 @@
 
 api_key='AIzaSyBV1HvfE3nQuJqBiW1a_dZhZyhPEkWpIJw'
 
-secret_file=$(find $1 -name "client_secret*.json" |  head -n 1)
+scriptdir=$(dirname "$0")
+secret_file=$(find $scriptdir -name "client_secret*.json" |  head -n 1)
 
 
 client_id=$(cat $secret_file | jq '.installed.client_id')
@@ -118,7 +119,7 @@ do
 	#filename='/data/mapillary/test/IMG_20200627_190002_3566343.JPG'
 
 	#get upload URL
-	upload_url_json="$(curl --request POST \
+	upload_url_json="$(curl  -s --request POST \
 			--url "https://streetviewpublish.googleapis.com/v1/photo:startUpload?key=${api_key}" \
 			--header "Authorization: Bearer ${access_token}" \
 			--header 'Content-Length: 0')"
@@ -153,7 +154,7 @@ do
 			
 	# creates a new file descriptor 3 that redirects to 1 (STDOUT)
 	
-	echo curl --request POST \
+	echo curl  -s  --request POST \
 			--url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" \
 			--header "Authorization: Bearer ${access_token}" \
 			--header 'Content-Type: application/json' \
