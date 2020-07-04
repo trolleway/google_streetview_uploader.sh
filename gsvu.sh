@@ -42,17 +42,14 @@ echo
 echo 'Exchange Authorization code for an access token and a refresh token.'
 
 
-
-
-
 data="code=$auth_code&client_id=$client_id&client_secret=$client_secret&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code"
-echo $data
+
 exchange_result="$(curl -s \
 --request POST \
 --data $data \
 https://accounts.google.com/o/oauth2/token)"
 
-echo $exchange_result | jq '.'
+
 
 
 access_token=$(echo $exchange_result | jq '.access_token')
@@ -66,12 +63,6 @@ access_token="${access_token#\"}"
 refresh_token="${refresh_token%\"}"
 refresh_token="${refresh_token#\"}"
 
-echo token=$access_token
-
-
-
-# do query
-#curl -s --request GET  --url "https://streetviewpublish.googleapis.com/v1/photos?pageSize=10&view=INCLUDE_DOWNLOAD_URL&key="$api_key --header "Authorization: Bearer ${access_token}" | jq '.'
 
 
 function get_data_json {
@@ -130,8 +121,7 @@ do
 	upload_url="${upload_url%\"}"
 	upload_url="${upload_url#\"}"	
 
-	echo 
-	echo 'post image'
+
 	#post image
 	post_image_response="$(curl --request POST \
 			--url "${upload_url}" \
@@ -139,45 +129,21 @@ do
 			--header "Authorization: Bearer ${access_token}" \
 			)"
 			
-
-	echo $post_image_response
-
 	image_metadata_json=$(get_data_json $filename $upload_url)
 
 	#post image metadata
-	#post_metadata_response="$(curl --request POST \
-	#		--url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" \
-	#		--header "Authorization: Bearer ${access_token}" \
-	#		--header 'Content-Type: application/json' \
-	#		--data  "${image_metadata_json}"
-	#		)"
-			
-	# creates a new file descriptor 3 that redirects to 1 (STDOUT)
-	
-	echo curl  -s  --request POST \
-			--url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" \
-			--header "Authorization: Bearer ${access_token}" \
-			--header 'Content-Type: application/json' \
-			--data  "${image_metadata_json}"
 	
 	exec 3>&1 
 	# Run curl in a separate command, capturing output of -w "%{http_code}" into HTTP_STATUS
 	# and sending the content to this command's STDOUT with -o >(cat >&3)
-	#echo curl -w "%{http_code}" -o >(cat >&3) --request POST --url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" --header "Authorization: Bearer ${access_token}" --header 'Content-Type: application/json' --data  "${image_metadata_json}" 
-	#HTTP_STATUS=$(curl -w "%{http_code}" -o >(cat >&3) --request POST --url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" --header "Authorization: Bearer ${access_token}" --header 'Content-Type: application/json' --data  "${image_metadata_json}" )
 
-	
-	
 	HTTP_STATUS="$(curl -w "%{http_code}" -o >(cat >&3) --request POST \
 			--url "https://streetviewpublish.googleapis.com/v1/photo?key=${api_key}" \
 			--header "Authorization: Bearer ${access_token}" \
 			--header 'Content-Type: application/json' \
 			--data  "${image_metadata_json}"
 			)"
-			
-			
-	
-	echo 'STATUS='$HTTP_STATUS
+
 	
 	if [ "$HTTP_STATUS" != 200 ]; then
 		echo  $filename 'STATUS='$HTTP_STATUS
@@ -202,7 +168,7 @@ do
 		#--data 'client_id=[Application Client Id]&client_secret=[Application Client Secret]&refresh_token=[Refresh token granted by second step]&grant_type=refresh_token' \
 		#https://accounts.google.com/o/oauth2/token
 		
-		
+		echo 'refresh token'
 		data="client_id=$client_id&client_secret=$client_secret&refresh_token=$refresh_token&grant_type=refresh_token"
 		echo $data
 
@@ -219,11 +185,6 @@ do
 		#strip quotes
 		access_token="${access_token%\"}"
 		access_token="${access_token#\"}"
-		
-		
-
 
 	fi
-
-
 done	
