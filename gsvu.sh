@@ -150,7 +150,7 @@ do
 		exit 0
 	fi	
 		
-	echo $post_metadata_response
+	#echo $post_metadata_response
 	mv $filename $uploaded_dir/$(basename $filename)
 	
 	
