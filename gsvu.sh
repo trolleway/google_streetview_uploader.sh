@@ -101,6 +101,10 @@ uploaded_dir=$dir/'uploaded2gsv'
 
 mkdir $uploaded_dir
 
+#progress count
+total=$(ls $dir/*.JPG | wc -l)
+counter=0
+
 #start timer
 time1=$(date +%s)
 
@@ -152,6 +156,9 @@ do
 		
 	#echo $post_metadata_response
 	mv $filename $uploaded_dir/$(basename $filename)
+
+        counter=$((counter+1))
+        echo $counter/$total
 	
 	
 	#timer tick
