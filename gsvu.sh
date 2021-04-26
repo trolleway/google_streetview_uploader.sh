@@ -71,13 +71,14 @@ function get_data_json {
 # 2 - upload_url
 url=$2
 
-json_data=$(exiftool -q -q  -json -n   -gpslatitude -gpslongitude -gpsimgdirection -gpsdatetime $1)
+json_data=$(exiftool -q -q  -json -n   -gpslatitude -gpslongitude -gpsimgdirection -datetimeoriginal $1)
 
 lat=$(jq -n "$json_data" | jq  '.[].GPSLatitude'  )
 lon=$(jq -n "$json_data" | jq  '.[].GPSLongitude'  )
 dir=$(jq -n "$json_data" | jq  '.[].GPSImgDirection'  )
-tme=$(jq -n "$json_data" | jq  '.[].GPSDateTime' | tr -d \" )
+tme=$(jq -n "$json_data" | jq  '.[].DateTimeOriginal' | tr -d \" )
 tme=${tme:0:4}${tme:5:2}${tme:8:2}${tme:10:9} #simple convert datetime for convert to unixtime
+
 tme=$(date --date "$tme" +%s)
 
 TEMPLATE='{"uploadReference":{"uploadUrl": "%s"
@@ -127,12 +128,14 @@ do
 
 
 	#post image
+	echo 'post image'
 	post_image_response="$(curl --request POST \
 			--url "${upload_url}" \
 			--upload-file "${filename}" \
 			--header "Authorization: Bearer ${access_token}" \
 			)"
 			
+	echo "make metadata"
 	image_metadata_json=$(get_data_json $filename $upload_url)
 
 	#post image metadata
