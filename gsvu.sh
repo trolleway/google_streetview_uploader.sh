@@ -4,6 +4,7 @@
 
 
 api_key='AIzaSyBV1HvfE3nQuJqBiW1a_dZhZyhPEkWpIJw'
+api_key='AIzaSyBCuk_HvkTYs4LroURcKUnoY5NOBmh_ScQ' #panotrolleway
 
 scriptdir=$(dirname "$0")
 secret_file=$(find $scriptdir -name "client_secret*.json" |  head -n 1)
